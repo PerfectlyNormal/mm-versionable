@@ -4,7 +4,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../lib/versionable')
 require 'test/unit'
 require 'test/config/config'
 
-require 'pp'
 require 'shoulda'
 
 require 'test/models/post'
