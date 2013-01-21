@@ -16,6 +16,3 @@ u = User.create(:fname => 'dhruva', :lname => 'sagar', :email => 'dhruva.sagar@g
 u.fname = 'Dhruva'
 u.lname = 'Sagar'
 u.save
-
-# u.posts << Post.new(:title => 'Dummy title', :body => 'Dummy post body', :date => Time.now)
-# u.save
