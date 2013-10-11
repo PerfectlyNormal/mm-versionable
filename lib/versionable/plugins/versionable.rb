@@ -1,6 +1,6 @@
-autoload :Version, 'versionable/models/version'
-
 module Versionable
+  autoload :Version, 'versionable/models/version'
+
   extend ActiveSupport::Concern
 
   def update_attributes(attrs={})
@@ -35,7 +35,7 @@ module Versionable
         if @versions_count
           @versions_count = @versions_count + 1
         else
-          @versions_count = Version.count(:doc_id => self._id.to_s)
+          @versions_count = Versionable::Version.count(:doc_id => self._id.to_s)
         end
       end
     end
@@ -56,16 +56,16 @@ module Versionable
       end
 
       define_method(:versions_count) do
-        @versions_count ||= Version.count(:doc_id => self._id.to_s)
+        @versions_count ||= Versionable::Version.count(:doc_id => self._id.to_s)
       end
 
       define_method(:versions) do
         @limit ||= opts[:limit] || 10
-        @versions ||= Version.all(:doc_id => self._id.to_s, :order => 'pos desc', :limit => @limit).reverse
+        @versions ||= Versionable::Version.all(:doc_id => self._id.to_s, :order => 'pos desc', :limit => @limit).reverse
       end
 
       define_method(:all_versions) do
-        Version.where(:doc_id => self._id.to_s).sort(:pos.desc)
+        Versionable::Version.where(:doc_id => self._id.to_s).sort(:pos.desc)
       end
 
       define_method(:delete_version) do |pos|
@@ -122,7 +122,7 @@ module Versionable
       define_method(:current_version) do
         data = self.attributes
         data.delete(:version_number)
-        Version.new(:data => data, :date => Time.now, :doc_id => self._id.to_s)
+        Versionable::Version.new(:data => data, :date => Time.now, :doc_id => self._id.to_s)
       end
 
       define_method(:version_at) do |pos|
@@ -132,7 +132,7 @@ module Versionable
         when :first
           index = self.versions.index {|v| v.pos == 0}
           version = self.versions[index] if index
-          version ||= Version.first(:doc_id => self._id.to_s, :pos => 0)
+          version ||= Versionable::Version.first(:doc_id => self._id.to_s, :pos => 0)
           version
         when :last
           #The last version is always same as the current version, so -2 instead of -1
@@ -142,7 +142,7 @@ module Versionable
         else
           index = self.versions.index {|v| v.pos == pos}
           version = self.versions[index] if index
-          version ||= Version.first(:doc_id => self._id.to_s, :pos => pos)
+          version ||= Versionable::Version.first(:doc_id => self._id.to_s, :pos => pos)
           version
         end
       end

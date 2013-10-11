@@ -1,4 +1,4 @@
-class Version
+class Versionable::Version
   include MongoMapper::Document
 
   key :data, Hash
