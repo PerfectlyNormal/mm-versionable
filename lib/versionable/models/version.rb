@@ -17,5 +17,5 @@ class Version
     else
       cdata
     end
-  end  
+  end
 end
